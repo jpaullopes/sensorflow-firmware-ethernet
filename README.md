@@ -8,6 +8,8 @@
 
 Firmware modular para a placa Raspberry Pi Pico W projetado para ler dados de sensores de ambiente (temperatura, pressão e humidade) e enviá-los para um servidor remoto via **conexão Ethernet com fio**. Este projeto faz parte da solução SensorFlow e utiliza uma arquitetura modular com o módulo W5500 para comunicação Ethernet estável e confiável.
 
+O projeto é uma variação de um projeto já existente, mas focado unicamente na comunicação via cabo cat usando o modulo W5500. Para acessar o repositório base, basta [clicar aqui](https://github.com/jpaullopes/sensorflow-firmware.git).
+
 ---
 
 ## 📑 Índice

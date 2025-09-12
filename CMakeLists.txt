@@ -114,6 +114,8 @@ target_compile_definitions(main PRIVATE
     SUBNET_MASK_1=255
     SUBNET_MASK_2=255
     SUBNET_MASK_3=0
+
+    # NÃO MEXER NAS VARIÁVEIS ACIMA, SENÃO NAO FUNCIONA.
 )
 
 pico_set_program_name(main "main")

@@ -33,10 +33,9 @@ int sensors_read_all(sensors_reading_t* reading) {
         return 1;
     }
     
-    // Preenche a estrutura de retorno
     reading->temperature_c = bmp_data.temperature_c;
-    reading->pressure_hpa = bmp_data.pressure_hpa;
-    reading->humidity_percent = humidity;
+    reading->humidity_percent = humidity; 
+    reading->pressure_hpa = bmp_data.pressure_hpa; 
     
     printf("[DADOS] Leitura dos sensores -> Temp: %.2f C | Hum: %.2f %% | Pres: %.2f hPa\n", 
            reading->temperature_c, 

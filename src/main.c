@@ -13,7 +13,7 @@ int main() {
     stdio_init_all();
     sleep_ms(3000);
 
-    char board_id_str[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+    static char board_id_str[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
     pico_get_unique_board_id_string(board_id_str, sizeof(board_id_str));
 
     printf("\n====================================================\n");
@@ -62,16 +62,14 @@ int main() {
             sleep_ms(SEND_INTERVAL_MS);
             continue;
         }
-
-        // Prepara estrutura para envio HTTP
-        sensor_data_t http_data = {
-            .temperature = sensor_data.temperature_c,
-            .humidity = sensor_data.humidity_percent,
-            .pressure = sensor_data.pressure_hpa,
-            .sensor_id = board_id_str
-        };
         
-        int result = http_send_sensor_data(&http_data);
+        int result = http_send_sensor_data(
+            sensor_data.temperature_c,
+            sensor_data.humidity_percent,
+            sensor_data.pressure_hpa,
+            board_id_str
+        );
+
         if (result < 0) {
             printf("[ERRO] Falha no envio dos dados.\n");
         }

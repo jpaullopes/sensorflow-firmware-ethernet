@@ -5,21 +5,12 @@
 #include <stdbool.h>
 
 /**
- * @brief Estrutura para dados dos sensores
- */
-typedef struct {
-    float temperature;
-    float humidity;
-    float pressure;
-    const char* sensor_id;
-} sensor_data_t;
-
-/**
  * @brief Envia dados dos sensores para o servidor via HTTP POST usando sockets TCP
  * @param data Estrutura contendo os dados dos sensores
  * @return 0 em caso de sucesso, negativo em caso de erro
  */
-int http_send_sensor_data(const sensor_data_t* data);
+
+int http_send_sensor_data(float temperature, float humidity, float pressure, const char* sensor_id);
 
 /**
  * @brief Converte string IP para array de bytes

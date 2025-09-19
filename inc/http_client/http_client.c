@@ -36,9 +36,9 @@ int http_parse_ip_string(const char* ip_str, uint8_t* ip_bytes) {
     return 0;
 }
 
-int http_send_sensor_data(float temperature, float humidity, float pressure, float concentration, float flow) {
+int http_send_sensor_data(float temperatur, float pressure, float concentration, float flow) {
     // Configurações do servidor (definidas em secrets.cmake)
-    uint8_t dest_ip[4];
+    uint8_t dest_ip[4];E
     if (http_parse_ip_string(TARGET_SERVER_IP, dest_ip) != 0) {
         printf("[ERRO] IP do servidor inválido: %s\n", TARGET_SERVER_IP);
         return -1;
@@ -71,8 +71,8 @@ int http_send_sensor_data(float temperature, float humidity, float pressure, flo
     // Preparar JSON payload
     char json_payload[512];
     int json_len = snprintf(json_payload, sizeof(json_payload),
-        "{\"temperature\":%.2f,\"humidity\":%.2f,\"pressure\":%.2f,\"concentration\":%.2f, \"flow\":%.2f}",
-        temperature, humidity, pressure, concentration, flow);
+        "{\"temperature\":%.2f,\"pressure\":%.2f,\"concentration\":%.2f, \"flow\":%.2f}",
+        temperature, pressure, concentration, flow);
     
     if (json_len >= sizeof(json_payload)) {
         printf("[ERRO] JSON payload muito grande\n");
@@ -89,14 +89,12 @@ int http_send_sensor_data(float temperature, float humidity, float pressure, flo
         "Host: %s\r\n"
         "Content-Type: application/json\r\n"
         "Content-Length: %d\r\n"
-        "API-Key: %s\r\n"
         "Connection: close\r\n"
         "\r\n"
         "%s",
         uri,
         TARGET_SERVER_IP, // Usar o IP como string para o Host
         json_len,
-        API_KEY,
         json_payload);
 
     if (header_len >= HTTP_REQUEST_BUF_SIZE) {

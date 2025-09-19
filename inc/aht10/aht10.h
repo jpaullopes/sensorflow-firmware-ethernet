@@ -11,10 +11,4 @@
  */
 void aht10_init();
 
-/**
- * @brief Lê a humidade do sensor AHT10.
- * @return O valor da humidade relativa em percentagem (%).
- */
-float aht10_read_humidity();
-
 #endif // AHT10_H

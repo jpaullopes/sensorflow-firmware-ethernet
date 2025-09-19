@@ -56,7 +56,6 @@ int main() {
         
         int result = http_send_sensor_data(
             sensor_data.temperature_c,
-            sensor_data.humidity_percent,
             sensor_data.pressure_hpa,
             sensor_data.concentration_percent,
             sensor_data.flow_liter

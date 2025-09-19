@@ -95,7 +95,6 @@ inc/sensor_manager/sensor_manager.c)
 # Macros de pré-processador (-D) durante a compilação.
 target_compile_definitions(main PRIVATE
     TARGET_SERVER_IP="${TARGET_SERVER_IP}"
-    API_KEY="${API_KEY}"
     TARGET_PORT=${TARGET_PORT}
     TARGET_PATH="${TARGET_PATH}"
     ETHERNET_MAC_0=0x00

@@ -28,22 +28,13 @@ int sensors_read_all(sensors_reading_t* reading) {
     bmp280_data_t bmp_data;
     bmp280_read(&bmp_data);
     
-    // Lê dados do AHT10 (umidade)
-    float humidity = aht10_read_humidity();
-    if (humidity < 0) {
-        printf("[ERRO] Falha na leitura do sensor AHT10.\n");
-        return 1;
-    }
-    
     reading->temperature_c = bmp_data.temperature_c;
-    reading->humidity_percent = humidity; 
     reading->pressure_hpa = bmp_data.pressure_hpa; 
     reading->concentration_percent = concentration_value();
     reading->flow_liter = flow_value();
     
-    printf("[DADOS] Leitura dos sensores -> Temp: %.2f C | Hum: %.2f %% | Pres: %.2f hPa | Conc: %.2f | Vaz: %.2f\n", 
+    printf("[DADOS] Leitura dos sensores -> Temp: %.2f C | Pres: %.2f hPa | Conc: %.2f | Vaz: %.2f\n", 
            reading->temperature_c, 
-           reading->humidity_percent,
            reading->pressure_hpa,
            reading->concentration_percent,
            reading->flow_liter

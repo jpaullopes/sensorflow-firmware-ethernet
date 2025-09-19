@@ -10,7 +10,7 @@
  * @return 0 em caso de sucesso, negativo em caso de erro
  */
 
-int http_send_sensor_data(float temperature, float humidity, float pressure, float concentration, float flow);
+int http_send_sensor_data(float temperature, float pressure, float concentration, float flow);
 
 /**
  * @brief Converte string IP para array de bytes

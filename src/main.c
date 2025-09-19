@@ -1,25 +1,16 @@
 #include <stdio.h>
 #include <string.h>
 #include "pico/stdlib.h"
-#include "pico/unique_id.h"
 
 #include "inc/ethernet_manager/ethernet_manager.h"
 #include "inc/http_client/http_client.h"
 #include "inc/sensor_manager/sensor_manager.h"
 
-#define SEND_INTERVAL_MS 5000
+#define SEND_INTERVAL_MS 1000
 
 int main() {
     stdio_init_all();
     sleep_ms(3000);
-
-    static char board_id_str[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
-    pico_get_unique_board_id_string(board_id_str, sizeof(board_id_str));
-
-    printf("\n====================================================\n");
-    printf("=       MONITOR DE SENSOR | RASPBERRY PI PICO W5500  =\n");
-    printf("= ID Unico da Placa: %s =\n", board_id_str);
-    printf("=====================================================\n");
 
     // Configuração de rede Ethernet
     ethernet_config_t eth_config = {
@@ -67,7 +58,8 @@ int main() {
             sensor_data.temperature_c,
             sensor_data.humidity_percent,
             sensor_data.pressure_hpa,
-            board_id_str
+            sensor_data.concentration_percent,
+            sensor_data.flow_liter
         );
 
         if (result < 0) {

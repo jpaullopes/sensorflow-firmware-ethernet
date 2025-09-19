@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "../bmp280/bmp280.h"
 #include "../aht10/aht10.h"
+#include "../concentration/concentration.h"
+#include "../flow/flow.h"
 
 int sensors_init(void) {
     printf("[INFO] Inicializando sensores...\n");
@@ -36,11 +38,16 @@ int sensors_read_all(sensors_reading_t* reading) {
     reading->temperature_c = bmp_data.temperature_c;
     reading->humidity_percent = humidity; 
     reading->pressure_hpa = bmp_data.pressure_hpa; 
+    reading->concentration_percent = concentration_value();
+    reading->flow_liter = flow_value();
     
-    printf("[DADOS] Leitura dos sensores -> Temp: %.2f C | Hum: %.2f %% | Pres: %.2f hPa\n", 
+    printf("[DADOS] Leitura dos sensores -> Temp: %.2f C | Hum: %.2f %% | Pres: %.2f hPa | Conc: %.2f | Vaz: %.2f\n", 
            reading->temperature_c, 
            reading->humidity_percent,
-           reading->pressure_hpa);
+           reading->pressure_hpa,
+           reading->concentration_percent,
+           reading->flow_liter
+        );
     
     return 0;
 }

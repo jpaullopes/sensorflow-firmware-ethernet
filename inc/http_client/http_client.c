@@ -36,16 +36,7 @@ int http_parse_ip_string(const char* ip_str, uint8_t* ip_bytes) {
     return 0;
 }
 
-int http_send_sensor_data(float temperature, float humidity, float pressure, const char* sensor_id) {
-    if (!sensor_id) {
-        printf("[ERRO] ID do sensor inválido\n");
-        return -1;
-    }
-    
-    printf("****************************************************\n");
-    printf("* INICIANDO CICLO DE ENVIO VIA ETHERNET           *\n");
-    printf("****************************************************\n");
-    
+int http_send_sensor_data(float temperature, float humidity, float pressure, float concentration, float flow) {
     // Configurações do servidor (definidas em secrets.cmake)
     uint8_t dest_ip[4];
     if (http_parse_ip_string(TARGET_SERVER_IP, dest_ip) != 0) {
@@ -80,8 +71,8 @@ int http_send_sensor_data(float temperature, float humidity, float pressure, con
     // Preparar JSON payload
     char json_payload[512];
     int json_len = snprintf(json_payload, sizeof(json_payload),
-        "{\"temperature\":%.2f,\"humidity\":%.2f,\"pressure\":%.2f,\"sensor_id\":\"%s\"}",
-        temperature, humidity, pressure, sensor_id);
+        "{\"temperature\":%.2f,\"humidity\":%.2f,\"pressure\":%.2f,\"concentration\":%.2f, \"flow\":%.2f}",
+        temperature, humidity, pressure, concentration, flow);
     
     if (json_len >= sizeof(json_payload)) {
         printf("[ERRO] JSON payload muito grande\n");

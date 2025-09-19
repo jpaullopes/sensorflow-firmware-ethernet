@@ -8,6 +8,8 @@ typedef struct {
     float temperature_c;
     float humidity_percent;
     float pressure_hpa;
+    float concentration_percent;
+    float flow_liter;
 } sensors_reading_t;
 
 /**

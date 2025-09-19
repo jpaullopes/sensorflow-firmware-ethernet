@@ -36,16 +36,7 @@ int http_parse_ip_string(const char* ip_str, uint8_t* ip_bytes) {
     return 0;
 }
 
-int http_send_sensor_data(const sensor_data_t* data) {
-    if (!data) {
-        printf("[ERRO] Dados dos sensores inválidos\n");
-        return -1;
-    }
-    
-    printf("****************************************************\n");
-    printf("* INICIANDO CICLO DE ENVIO VIA ETHERNET           *\n");
-    printf("****************************************************\n");
-    
+int http_send_sensor_data(float temperature, float humidity, float pressure, float concentration, float flow) {
     // Configurações do servidor (definidas em secrets.cmake)
     uint8_t dest_ip[4];
     if (http_parse_ip_string(TARGET_SERVER_IP, dest_ip) != 0) {
@@ -75,13 +66,13 @@ int http_send_sensor_data(const sensor_data_t* data) {
         return ret;
     }
     
-    printf("[OK]   Conexão TCP estabelecida.\n");
+    printf("[OK]  Conexão TCP estabelecida.\n");
     
     // Preparar JSON payload
     char json_payload[512];
     int json_len = snprintf(json_payload, sizeof(json_payload),
-        "{\"temperature\":%.2f,\"humidity\":%.2f,\"pressure\":%.2f,\"sensor_id\":\"%s\"}",
-        data->temperature, data->humidity, data->pressure, data->sensor_id);
+        "{\"temperature\":%.2f,\"humidity\":%.2f,\"pressure\":%.2f,\"concentration\":%.2f, \"flow\":%.2f}",
+        temperature, humidity, pressure, concentration, flow);
     
     if (json_len >= sizeof(json_payload)) {
         printf("[ERRO] JSON payload muito grande\n");
@@ -92,10 +83,10 @@ int http_send_sensor_data(const sensor_data_t* data) {
     printf("[DADOS] Preparando o seguinte JSON para envio:\n");
     printf("       -> %s\n", json_payload);
     
-    // Montar requisição HTTP
+    // Montar requisição HTTP completa (cabeçalhos + corpo JSON)
     int header_len = snprintf((char*)http_request_buf, HTTP_REQUEST_BUF_SIZE,
         "POST %s HTTP/1.1\r\n"
-        "Host: %d.%d.%d.%d:%d\r\n"
+        "Host: %s\r\n"
         "Content-Type: application/json\r\n"
         "Content-Length: %d\r\n"
         "API-Key: %s\r\n"
@@ -103,11 +94,11 @@ int http_send_sensor_data(const sensor_data_t* data) {
         "\r\n"
         "%s",
         uri,
-        dest_ip[0], dest_ip[1], dest_ip[2], dest_ip[3], dest_port,
+        TARGET_SERVER_IP, // Usar o IP como string para o Host
         json_len,
         API_KEY,
         json_payload);
-    
+
     if (header_len >= HTTP_REQUEST_BUF_SIZE) {
         printf("[ERRO] Requisição HTTP muito grande\n");
         close(socket_num);
@@ -126,7 +117,7 @@ int http_send_sensor_data(const sensor_data_t* data) {
     
     printf("[OK]   Requisição enviada (%ld bytes). Aguardando resposta...\n", ret);
     
-    // Aguardar e ler resposta (opcional, para debug)
+    // Aguardar e ler resposta
     uint32_t timeout = 0;
     while (getSn_RX_RSR(socket_num) == 0 && timeout < HTTP_TIMEOUT_MS) {
         sleep_ms(10);
@@ -151,5 +142,5 @@ int http_send_sensor_data(const sensor_data_t* data) {
     printf("[INFO] Conexão fechada.\n");
     printf("[INFO] Ciclo de envio concluído. Liberando recursos.\n");
     
-    return json_len;  // Retorna o tamanho do payload enviado
+    return json_len;
 }

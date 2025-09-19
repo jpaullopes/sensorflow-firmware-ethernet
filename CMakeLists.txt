@@ -84,6 +84,8 @@ include(secrets.cmake)
 add_executable(main src/main.c
 inc/bmp280/bmp280.c
 inc/aht10/aht10.c
+inc/concentration/concentration.c
+inc/flow/flow.c
 inc/ethernet_manager/ethernet_manager.c
 inc/ethernet_manager/w5500_config.c
 inc/http_client/http_client.c
@@ -114,6 +116,8 @@ target_compile_definitions(main PRIVATE
     SUBNET_MASK_1=255
     SUBNET_MASK_2=255
     SUBNET_MASK_3=0
+
+    # NÃO MEXER NAS VARIÁVEIS ACIMA, SENÃO NAO FUNCIONA.
 )
 
 pico_set_program_name(main "main")

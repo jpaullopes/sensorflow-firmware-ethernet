@@ -13,13 +13,14 @@ const uint8_t AHT10_CMD_SOFTRESET = 0xBA;
 // --- Funções Públicas ---
 
 void aht10_init() {
-    printf("Configurando Sensor de Humidade AHT10 na I2C 1...\n");
+    printf("Configurando Sensor de Umidade AHT10 na I2C 1...\n");
     // Inicializa a instância i2c1
     i2c_init(i2c1, 100 * 1000);
     gpio_set_function(I2C1_SDA_PIN, GPIO_FUNC_I2C);
     gpio_set_function(I2C1_SCL_PIN, GPIO_FUNC_I2C);
     gpio_pull_up(I2C1_SDA_PIN);
     gpio_pull_up(I2C1_SCL_PIN);
+    
 
     // Envia um comando de Soft Reset
     uint8_t reset_cmd = AHT10_CMD_SOFTRESET;

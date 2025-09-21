@@ -1,5 +1,5 @@
-#ifndef AHT10_H
-#define AHT10_H
+#ifndef TEMPERATURE_H
+#define TEMPERATURE_H
 
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
@@ -11,4 +11,4 @@
  */
 void aht10_init();
 
-#endif // AHT10_H
+#endif // TEMPERATURE_H
